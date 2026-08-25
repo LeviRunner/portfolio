@@ -41,7 +41,7 @@
   "about": {
     "text": [
       "Profissional de Tecnologia da Informação com base sólida em rotinas financeiras e administrativas, hoje focado em **engenharia e análise de dados**. Tenho experiência prática no gerenciamento, monitoramento e otimização de infraestruturas de bancos de dados em regime crítico (24/7), além de atuação estratégica em análise de dados e logística integrada de ativos.",
-      "Fora da experiência corporativa, construo soluções de dados escaláveis e aplicações em produção, como o [DataLens](https://github.com/LeviRunner){#8D62DD} e o [DevRank](https://mfp.tec.br){#0EA5E9}. Meu diferencial é a dupla perspectiva: fluência técnica em engenharia de dados aliada à compreensão de fluxos de caixa e regras de negócio, o que me permite traduzir grandes volumes de informação em insights acionáveis.",
+      "Fora da experiência corporativa, construo soluções de dados escaláveis e aplicações em produção, como o [DataLens](https://github.com/LeviRunner/DataLens){#8D62DD} e o [DevRank](https://devrank.com.br/){#0EA5E9}. Meu diferencial é a dupla perspectiva: fluência técnica em engenharia de dados aliada à compreensão de fluxos de caixa e regras de negócio, o que me permite traduzir grandes volumes de informação em insights acionáveis.",
       "Atualmente curso Bacharelado em Ciência da Computação na Estácio e complemento a formação com especialização em Dados & Inteligência Artificial. Falo português (nativo), espanhol (fluente) e inglês (avançado)."
     ]
   },
@@ -119,7 +119,7 @@
         "Cloudflare",
         "Educação"
       ],
-      "href": "https://mfp.tec.br"
+      "href": "https://devrank.com.br/"
     },
     {
       "title": "DataLens",
@@ -129,7 +129,7 @@
         "Polars",
         "Power BI"
       ],
-      "href": "https://github.com/LeviRunner"
+      "href": "https://github.com/LeviRunner/DataLens"
     }
   ],
   "skills": [
