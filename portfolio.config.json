@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "siteTitle": "Matheus Santos | Dados, Cloud & DevOps",
+    "siteDescription": "Portfólio de Matheus Santos Moises — Ciência da Computação, Engenharia de Dados, Cloud e DevOps.",
+    "ogImage": "https://github.com/LeviRunner.png",
+    "favicon": "https://github.com/LeviRunner.png",
+    "defaultTheme": "dark",
+    "scale": "small",
+    "language": "pt",
+    "animations": true,
+    "credits": true
+  },
+  "person": {
+    "name": "Matheus Santos Moises",
+    "title": "Ciência da Computação | Dados | Cloud | DevOps",
+    "location": "São Paulo, Brasil",
+    "avatar": "https://github.com/LeviRunner.png",
+    "social": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/LeviRunner",
+        "icon": "github"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/matheus-santos-744417421/",
+        "icon": "linkedin"
+      },
+      {
+        "label": "E-mail",
+        "href": "mailto:matheus.santos.m2099@outlook.com",
+        "icon": "email"
+      },
+      {
+        "label": "Currículo",
+        "href": "https://mfp.tec.br/resume.pdf",
+        "icon": "resume"
+      }
+    ]
+  },
+  "about": {
+    "text": [
+      "Profissional de Tecnologia da Informação com base sólida em rotinas financeiras e administrativas, hoje focado em **engenharia e análise de dados**. Tenho experiência prática no gerenciamento, monitoramento e otimização de infraestruturas de bancos de dados em regime crítico (24/7), além de atuação estratégica em análise de dados e logística integrada de ativos.",
+      "Fora da experiência corporativa, construo soluções de dados escaláveis e aplicações em produção, como o [DataLens](https://github.com/LeviRunner){#8D62DD} e o [DevRank](https://mfp.tec.br){#0EA5E9}. Meu diferencial é a dupla perspectiva: fluência técnica em engenharia de dados aliada à compreensão de fluxos de caixa e regras de negócio, o que me permite traduzir grandes volumes de informação em insights acionáveis.",
+      "Atualmente curso Bacharelado em Ciência da Computação na Estácio e complemento a formação com especialização em Dados & Inteligência Artificial. Falo português (nativo), espanhol (fluente) e inglês (avançado)."
+    ]
+  },
+  "workExperience": [
+    {
+      "company": "Los Trigales",
+      "companyUrl": "https://www.lostrigales.com.py",
+      "role": "Analista de Dados",
+      "period": "Maio 2025 - Junho 2026",
+      "tags": [
+        "Presencial",
+        "SQL",
+        "Power BI",
+        "Logística"
+      ],
+      "bullets": [
+        "Gestão ponta a ponta e controle de inventário de ativos da empresa.",
+        "Planejamento analítico de rotas para translado seguro de equipamentos.",
+        "Otimização de processos na operação de transporte rodoviário e logística local.",
+        "Estruturação de dados e desenho de fluxos de ETL para garantir a integridade das informações logísticas."
+      ]
+    },
+    {
+      "company": "BunkerGames",
+      "companyUrl": "https://www.bunkergames.com.br",
+      "role": "Assistente de Banco de Dados",
+      "period": "Janeiro 2021 - Dezembro 2024",
+      "tags": [
+        "Presencial",
+        "SQL",
+        "DevOps",
+        "Alta disponibilidade"
+      ],
+      "bullets": [
+        "Administração diária e monitoramento de desempenho de infraestrutura de servidores.",
+        "Identificação de gargalos (*bottlenecks*) e mitigação de falhas em consultas.",
+        "Garantia de alta disponibilidade da plataforma em regime crítico (24/7)."
+      ]
+    },
+    {
+      "company": "Cap Vida Promoção de Vendas e Serviços Ltda",
+      "companyUrl": "https://www.linkedin.com/in/matheus-santos-744417421/",
+      "role": "Assistente Financeiro",
+      "period": "Abril 2018 - Dezembro 2020",
+      "tags": [
+        "Presencial",
+        "Financeiro",
+        "Relatórios"
+      ],
+      "bullets": [
+        "Execução e auditoria de fluxos de caixa e rotinas de conciliação bancária.",
+        "Controle rigoroso de prazos de contas a pagar e a receber.",
+        "Geração de relatórios operacionais para suporte à tomada de decisão gerencial."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Estácio",
+      "degree": "Bacharelado em Ciência da Computação",
+      "period": "2023 - 2027"
+    },
+    {
+      "institution": "DIO (Digital Innovation One)",
+      "degree": "Formação Profissional em Dados & Inteligência Artificial",
+      "period": "Julho 2026 - Novembro 2026"
+    }
+  ],
+  "projects": [
+    {
+      "title": "DevRank",
+      "description": "Plataforma educacional gamificada **em produção**, com backend em Python e ambiente Cloudflare, que gerencia métricas analíticas complexas e correção automatizada de código em tempo real.",
+      "tags": [
+        "Python",
+        "Cloudflare",
+        "Educação"
+      ],
+      "href": "https://mfp.tec.br"
+    },
+    {
+      "title": "DataLens",
+      "description": "Arquitetura de dados otimizada que substitui o processamento tradicional em memória por um ecossistema com DuckDB, Polars e Pandera, permitindo ingestão, validação e análise de grandes volumes de dados financeiros com integração direta ao Power BI.",
+      "tags": [
+        "DuckDB",
+        "Polars",
+        "Power BI"
+      ],
+      "href": "https://github.com/LeviRunner"
+    }
+  ],
+  "skills": [
+    "SQL",
+    "Python",
+    "R",
+    "Power BI",
+    "DAX",
+    "Tableau",
+    "Google Data Studio",
+    "ETL & Modelagem de Dados",
+    "DuckDB",
+    "Polars",
+    "Pandera",
+    "Hadoop",
+    "Hive",
+    "Spark",
+    "Cloud Computing",
+    "Cloudflare",
+    "DevOps",
+    "IA Generativa"
+  ],
+  "certifications": null,
+  "blog": {
+    "enabled": false
+  },
+  "discordActivity": {
+    "enabled": false,
+    "userId": ""
+  }
+}
