@@ -1,7 +1,7 @@
 {
   "meta": {
     "siteTitle": "Matheus Santos | Dados, Cloud & DevOps",
-    "siteDescription": "Portfólio de Matheus Santos Moises — Ciência da Computação, Engenharia de Dados, Cloud e DevOps.",
+    "siteDescription": "Portfólio de Matheus Santos Moises — Analista de Dados com 5 anos em produção: SQL, Power BI, engenharia de dados em Python, Cloud e DevOps.",
     "ogImage": "https://github.com/LeviRunner.png",
     "favicon": "https://github.com/LeviRunner.png",
     "defaultTheme": "dark",
@@ -12,7 +12,7 @@
   },
   "person": {
     "name": "Matheus Santos Moises",
-    "title": "Ciência da Computação | Dados | Cloud | DevOps",
+    "title": "Dados & Analytics | Business Intelligence | Cloud & DevOps",
     "location": "São Paulo, Brasil",
     "avatar": "https://github.com/LeviRunner.png",
     "social": [
@@ -40,7 +40,7 @@
   },
   "about": {
     "text": [
-      "Profissional de Tecnologia da Informação com base sólida em rotinas financeiras e administrativas, hoje focado em **engenharia e análise de dados**. Tenho experiência prática no gerenciamento, monitoramento e otimização de infraestruturas de bancos de dados em regime crítico (24/7), além de atuação estratégica em análise de dados e logística integrada de ativos.",
+      "Analista de Dados com **5 anos em ambientes de produção**, quatro deles em banco de dados com monitoramento de desempenho, alta disponibilidade 24/7 e integridade de base. Atuo end-to-end: modelagem dimensional, ETL, SQL e Power BI com DAX, usando Python para automação e tratamento — levar o dado da origem até um painel em que o gestor confia, e sustentar o ambiente que roda por trás dele.",
       "Fora da experiência corporativa, construo soluções de dados escaláveis e aplicações em produção, como o [DataLens](https://github.com/LeviRunner/DataLens){#8D62DD} e o [DevRank](https://devrank.com.br/){#0EA5E9}. Meu diferencial é a dupla perspectiva: fluência técnica em engenharia de dados aliada à compreensão de fluxos de caixa e regras de negócio, o que me permite traduzir grandes volumes de informação em insights acionáveis.",
       "Atualmente curso Bacharelado em Ciência da Computação na Estácio e complemento a formação com especialização em Dados & Inteligência Artificial. Falo português (nativo), espanhol (fluente) e inglês (avançado)."
     ]
@@ -55,13 +55,16 @@
         "Presencial",
         "SQL",
         "Power BI",
+        "ETL",
         "Logística"
       ],
       "bullets": [
         "Gestão ponta a ponta e controle de inventário de ativos da empresa.",
         "Planejamento analítico de rotas para translado seguro de equipamentos.",
         "Otimização de processos na operação de transporte rodoviário e logística local.",
-        "Estruturação de dados e desenho de fluxos de ETL para garantir a integridade das informações logísticas."
+        "Estruturação de dados e desenho de fluxos de ETL para garantir a integridade das informações logísticas.",
+        "Modelagem dimensional em *star schema* e construção de painéis em Power BI com DAX para acompanhamento de KPIs operacionais.",
+        "Automação de rotinas de coleta e tratamento de dados em Python, eliminando consolidações manuais recorrentes."
       ]
     },
     {
@@ -72,13 +75,17 @@
       "tags": [
         "Presencial",
         "SQL",
+        "PostgreSQL",
         "DevOps",
         "Alta disponibilidade"
       ],
       "bullets": [
         "Administração diária e monitoramento de desempenho de infraestrutura de servidores.",
         "Identificação de gargalos (*bottlenecks*) e mitigação de falhas em consultas.",
-        "Garantia de alta disponibilidade da plataforma em regime crítico (24/7)."
+        "Garantia de alta disponibilidade da plataforma em regime crítico (24/7).",
+        "*Tuning* de consultas e estratégia de indexação em PostgreSQL e MySQL, reduzindo tempo de resposta em operações críticas.",
+        "Rotinas de *backup* e restauração validadas periodicamente, assegurando a integridade e a recuperabilidade da base.",
+        "Observabilidade da infraestrutura com Prometheus e Grafana em ambiente Linux."
       ]
     },
     {
@@ -113,43 +120,88 @@
   "projects": [
     {
       "title": "DevRank",
-      "description": "Plataforma educacional gamificada **em produção**, com backend em Python e ambiente Cloudflare, que gerencia métricas analíticas complexas e correção automatizada de código em tempo real.",
+      "description": "Plataforma educacional gamificada **em produção** sobre o ecossistema Cloudflare. Responsável por toda a infraestrutura — domínio, DNS, Workers e e-mail transacional com SPF/DKIM — e pelo backend em Python, com métricas analíticas e correção automatizada de código em tempo real.",
       "tags": [
         "Python",
         "Cloudflare",
-        "Educação"
+        "Next.js"
       ],
       "href": "https://devrank.com.br/"
     },
     {
       "title": "DataLens",
-      "description": "Arquitetura de dados otimizada que substitui o processamento tradicional em memória por um ecossistema com DuckDB, Polars e Pandera, permitindo ingestão, validação e análise de grandes volumes de dados financeiros com integração direta ao Power BI.",
+      "description": "Análise de dados configurável **open source**: gera o perfil automático de qualquer fonte (CSV, Excel, SQL, JSON, API) sem escrever código. Reestruturei a arquitetura para DuckDB + Polars + pandera + APScheduler sobre Parquet, saindo de um fluxo em pandas que estourava a memória no Streamlit — com integração direta ao Power BI.",
       "tags": [
         "DuckDB",
         "Polars",
         "Power BI"
       ],
       "href": "https://github.com/LeviRunner/DataLens"
+    },
+    {
+      "title": "TechStore",
+      "description": "Loja fictícia de e-commerce usada como vitrine técnica: catálogo, carrinho, checkout e área administrativa. Deploy em produção na **Azure** (App Service + PostgreSQL gerenciado), com pipeline de entrega contínua.",
+      "tags": [
+        "Next.js",
+        "Azure",
+        "PostgreSQL"
+      ],
+      "href": "https://github.com/LeviRunner"
     }
   ],
   "skills": [
-    "SQL",
-    "Python",
-    "R",
+    "SQL avançado",
+    "Modelagem dimensional",
+    "Star schema",
+    "ETL",
     "Power BI",
     "DAX",
     "Tableau",
     "Google Data Studio",
-    "ETL & Modelagem de Dados",
-    "DuckDB",
+    "Análise exploratória",
+    "KPIs",
+    "Python",
+    "R",
     "Polars",
-    "Pandera",
+    "pandas",
+    "DuckDB",
+    "pandera",
+    "APScheduler",
+    "Parquet",
+    "Qualidade de dados",
+    "Spark",
     "Hadoop",
     "Hive",
-    "Spark",
-    "Cloud Computing",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+    "Redis",
+    "SQLite",
+    "Tuning de consultas",
+    "Indexação",
+    "Backup & restauração",
+    "Azure",
+    "AWS",
+    "GCP",
     "Cloudflare",
-    "DevOps",
+    "Terraform",
+    "Linux",
+    "Nginx",
+    "Docker",
+    "Kubernetes",
+    "GitHub Actions",
+    "Ansible",
+    "Git",
+    "Prometheus",
+    "Grafana",
+    "FastAPI",
+    "Streamlit",
+    "SQLAlchemy",
+    "TypeScript",
+    "JavaScript",
+    "Node.js",
+    "React",
+    "PHP",
     "IA Generativa"
   ],
   "certifications": null,
