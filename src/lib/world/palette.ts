@@ -33,6 +33,30 @@ export const segment = (
 ): SegmentLine =>
   new THREE.Line(new THREE.BufferGeometry().setFromPoints([a, b]), lineMat(color, opacity));
 
+/**
+ * Segmento cujas pontas mudam a cada quadro. Existe porque `setFromPoints` cria
+ * um BufferAttribute novo a cada chamada: dentro do loop isso é lixo por quadro
+ * e re-upload para a GPU.
+ */
+export interface LiveSegment {
+  line: SegmentLine;
+  positions: Float32Array;
+  commit(): void;
+}
+
+export function liveSegment(color: number, opacity: number): LiveSegment {
+  const positions = new Float32Array(6);
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  const line = new THREE.Line(geometry, lineMat(color, opacity));
+  line.frustumCulled = false;
+  return {
+    line,
+    positions,
+    commit() { geometry.attributes.position.needsUpdate = true; },
+  };
+}
+
 export const ring = (
   radius: number,
   color: number,

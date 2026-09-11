@@ -3,7 +3,7 @@
 
 import * as THREE from "three";
 import {
-  C, damp, ring, segment, solidCloud, vertexColorCloud, wire,
+  C, damp, liveSegment, ring, segment, solidCloud, vertexColorCloud, wire,
   type SegmentLine, type WireMesh,
 } from "./palette";
 import { CICD_EDGES, CICD_NODES, stateColors, type NodeState } from "./pipeline";
@@ -208,13 +208,16 @@ function buildEtl(store: WorldStore): Station {
   const tmp = new THREE.Color();
   const A = new THREE.Vector3();
   const stages: THREE.Object3D[][] = [sources, [cage, etl], [wh], [panel, ...bars]];
+  // Um caminho por raia, montado uma vez: antes isto era um array novo por
+  // partícula por quadro, 260 alocações a cada 16 ms.
+  const PATHS = SRC.map((source) => [source, ETL, WH, DASH]);
 
   return {
     group,
     update(dt, t) {
       for (let i = 0; i < N; i++) {
         tt[i] = (tt[i] + spd[i] * dt) % 1;
-        const path = [SRC[lane[i]], ETL, WH, DASH];
+        const path = PATHS[lane[i]];
         const u = tt[i] * 3;
         const k = Math.min(2, Math.floor(u));
         const f = u - k;
@@ -553,14 +556,13 @@ function buildCore(store: WorldStore): Station {
   const sats = [0, 1, 2, 3].map((i) => {
     const s = wire(new THREE.OctahedronGeometry(0.6, 0), C.soft, 0.75);
     orbit.add(s);
-    const beam = segment(new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 0), C.accent, 0);
-    orbit.add(beam);
+    const beam = liveSegment(C.accent, 0);
+    orbit.add(beam.line);
     return { s, beam, i, angle: (i / 4) * Math.PI * 2 };
   });
 
   const hot = new THREE.Color(C.accent);
   const soft = new THREE.Color(C.soft);
-  const a = new THREE.Vector3(), b = new THREE.Vector3();
 
   return {
     group,
@@ -579,9 +581,11 @@ function buildCore(store: WorldStore): Station {
         sat.s.scale.setScalar(damp(sat.s.scale.x, on ? 1.6 : 1, 7, dt));
         sat.s.material.color.lerp(on ? hot : soft, Math.min(1, dt * 7));
 
-        a.set(0, 0, 0); b.copy(sat.s.position);
-        sat.beam.geometry.setFromPoints([a, b]);
-        sat.beam.material.opacity = damp(sat.beam.material.opacity, on ? 0.55 : 0.08, 7, dt);
+        sat.beam.positions[3] = sat.s.position.x;
+        sat.beam.positions[4] = sat.s.position.y;
+        sat.beam.positions[5] = sat.s.position.z;
+        sat.beam.commit();
+        sat.beam.line.material.opacity = damp(sat.beam.line.material.opacity, on ? 0.55 : 0.08, 7, dt);
       });
       orbit.rotation.z += dt * 0.04;
     },

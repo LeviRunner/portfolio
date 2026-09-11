@@ -27,8 +27,25 @@ const FAST_FRAME_MS = TARGET_FRAME_MS * 0.82;
 const DOWNGRADE_COOLDOWN_S = 2;
 const UPGRADE_COOLDOWN_S = 6;
 
-/** Quanto a câmera persegue o scroll. Baixo demais e a rolagem parece travada. */
-const CAMERA_LAMBDA = 9;
+/* ── resposta ao scroll ───────────────────────────────────────
+   Só amortecer sempre atrasa: numa rolagem contínua a câmera fica v/λ atrás do
+   texto, e é esse descompasso que se sente como arrasto. Então o alvo leva um
+   termo de velocidade à frente, que cancela o atraso em regime, e o
+   amortecimento fica só para filtrar o tranco de cada clique da roda. */
+const CAMERA_LAMBDA = 12;
+const VELOCITY_LAMBDA = 10;
+const LEAD_SECONDS = 1 / CAMERA_LAMBDA;
+const MAX_LEAD = 0.04;
+const MIN_DT = 1 / 240;
+
+/* Dentro de cada trecho entre estações a fração passa por um smoothstep
+   parcial: a câmera assenta ao chegar e faz a travessia no meio do caminho, em
+   vez de derivar o tempo todo na mesma velocidade. */
+const EASE_MIX = 0.6;
+const easeSegment = (f: number) => {
+  const smooth = f * f * (3 - 2 * f);
+  return f + (smooth - f) * EASE_MIX;
+};
 
 export type PipelineEvent = (id: string, state: RunState) => void;
 
@@ -179,7 +196,7 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
       const a = anchors[i], b = anchors[i + 1];
       if (y < b) {
         const span = b - a;
-        return (i + (span > 0 ? (y - a) / span : 0)) / lastStation;
+        return (i + easeSegment(span > 0 ? (y - a) / span : 0)) / lastStation;
       }
     }
     return 1;
@@ -234,16 +251,20 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
   const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
 
   /* ── loop ─────────────────────────────────────────────────── */
-  const clock = new THREE.Clock();
+  // O timestamp do próprio requestAnimationFrame basta; THREE.Clock está
+  // depreciado e criaria um objeto a mais para a mesma conta.
+  let lastFrameTime = 0;
   const camPos = new THREE.Vector3();
   const lookPos = new THREE.Vector3();
   let raf = 0, live = false, u = 0, worldTime = 0, currentStation = 0;
   let frameAvgMs = TARGET_FRAME_MS, qualityCooldown = UPGRADE_COOLDOWN_S;
+  let prevRawU = 0, scrollVel = 0;
   let onStationChange: ((index: number, id: string) => void) | null = null;
 
-  function frame() {
+  function frame(now: number) {
     raf = requestAnimationFrame(frame);
-    const dt = Math.min(clock.getDelta(), 0.05);
+    const dt = lastFrameTime ? Math.min((now - lastFrameTime) / 1000, 0.05) : 1 / 60;
+    lastFrameTime = now;
     worldTime += reduced ? dt * 0.25 : dt;
     const t = worldTime;
 
@@ -262,10 +283,19 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
       }
     }
 
-    u = reduced ? scrollToU() : damp(u, scrollToU(), CAMERA_LAMBDA, dt);
+    const rawU = scrollToU();
+    if (reduced) {
+      u = rawU;
+    } else {
+      const instantVel = (rawU - prevRawU) / Math.max(dt, MIN_DT);
+      scrollVel = damp(scrollVel, instantVel, VELOCITY_LAMBDA, dt);
+      const lead = clamp(scrollVel * LEAD_SECONDS, -MAX_LEAD, MAX_LEAD);
+      u = damp(u, clamp(rawU + lead, 0, 1), CAMERA_LAMBDA, dt);
+    }
+    prevRawU = rawU;
 
-    camPos.copy(camCurve.getPoint(u));
-    lookPos.copy(lookCurve.getPoint(u));
+    camCurve.getPoint(u, camPos);
+    lookCurve.getPoint(u, lookPos);
     if (!reduced) {
       forward.subVectors(lookPos, camPos).normalize();
       right.crossVectors(forward, UP).normalize();
@@ -300,7 +330,7 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
   }
 
   const api: WorldApi = {
-    start() { if (!live) { live = true; clock.getDelta(); frame(); } },
+    start() { if (!live) { live = true; lastFrameTime = 0; raf = requestAnimationFrame(frame); } },
     stop() { if (live) { live = false; cancelAnimationFrame(raf); } },
     measure,
     onStation(cb) { onStationChange = cb; },
