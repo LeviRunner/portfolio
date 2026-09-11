@@ -1,56 +1,53 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { BASE_FONT_SIZE_PX, portfolioConfig, px } from "@/lib/portfolio-config";
+import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import "./world.css";
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
 });
 
-const { siteTitle, siteDescription, ogImage, defaultTheme } = portfolioConfig.meta;
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
-// Next.js doesn't prepend basePath to the auto-generated icon.tsx <link> href
-// (https://github.com/vercel/next.js/issues/61487), so it's set explicitly here.
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const SITE_URL = "https://matheusdata.dev";
+const TITLE = "Matheus Santos | Dados, Cloud & DevOps";
+const DESCRIPTION =
+  "Portfólio de Matheus Santos Moises — Analista de Dados com 5 anos em produção: SQL, Power BI, engenharia de dados em Python, Cloud e DevOps.";
 
 export const metadata: Metadata = {
-  title: siteTitle,
-  description: siteDescription,
-  metadataBase: new URL(
-    process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000"
-  ),
-  icons: {
-    icon: `${basePath}/icon`,
-  },
+  title: TITLE,
+  description: DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
   openGraph: {
-    title: siteTitle,
-    description: siteDescription,
-    images: [{ url: ogImage }],
+    type: "website",
+    locale: "pt_BR",
+    url: SITE_URL,
+    siteName: "matheus.data",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: TITLE }],
   },
   twitter: {
     card: "summary_large_image",
-    title: siteTitle,
-    description: siteDescription,
-    images: [ogImage],
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og.jpg"],
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`} style={{ fontSize: px(BASE_FONT_SIZE_PX) }} suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        <ThemeProvider attribute="class" defaultTheme={defaultTheme}>
-          {children}
-        </ThemeProvider>
-      </body>
+    <html lang="pt-BR" data-lang="pt" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

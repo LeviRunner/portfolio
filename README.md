@@ -1,80 +1,110 @@
-# OpenPortfolios
+# matheus.data
 
-Template de portfolio pessoal, pronto para usar, construído com [Next.js](https://nextjs.org). Tudo é configurado por um único arquivo (`portfolio.config.json`) e por arquivos Markdown, sem necessidade de programar.
+Portfólio pessoal de Matheus Santos Moises — uma jornada contínua em WebGL onde o
+scroll da página conduz a câmera por uma infraestrutura 3D viva.
+Next.js 16 + three.js, publicado em [matheusdata.dev](https://matheusdata.dev)
+via Cloudflare Workers (OpenNext).
 
-![Preview do portfolio](public/preview.png)
+## A ideia
 
-> [!NOTE]
-> Este README documenta o projeto. Para a documentação completa de cada campo do `portfolio.config.json` e do sistema de blog, veja [DOCUMENTATION.md](DOCUMENTATION.md).
+Não há cenas 3D separadas trocando de lugar. Existe **um único canvas fixo**
+(`.world-canvas`, atrás de todo o conteúdo) e **um mundo 3D só**, com oito estações
+posicionadas em coordenadas reais. Rolar a página desliza a câmera por uma
+`CatmullRomCurve3` que atravessa esse mundo — o visitante viaja pela infraestrutura
+em vez de assistir a slides.
 
-## Índice
+| # | Seção | Estação no mundo |
+| --- | --- | --- |
+| — | Hero | grafo de CI/CD vivo |
+| 01 | Dados & ETL | fontes → ETL → warehouse → painel |
+| 02 | Cloud | cluster isométrico, load balancer e autoscaling |
+| 03 | Entrega contínua | o mesmo grafo, de perfil, no portal de release |
+| 04 | Trajetória | anéis orbitais por período |
+| 05 | Em produção | painéis holográficos atrás dos cartões |
+| 06 | Stack | constelação de cinco aglomerados |
+| 07 | Command center | núcleo com os endpoints em órbita |
 
-1. [Recursos](#recursos)
-2. [Como usar](#como-usar)
-3. [Configuração](#configuração)
-4. [Rodando localmente](#rodando-localmente)
-5. [Estrutura do projeto](#estrutura-do-projeto)
-6. [Deploy](#deploy)
-7. [Licença](#licença)
+Uma **espinha de dados** liga as estações na ordem do trajeto e 1100 pontos de poeira
+dão paralaxe entre elas. O `FogExp2` faz a estação seguinte aparecer no horizonte
+antes de você chegar nela.
 
-## Recursos
+## Estrutura
 
-- **Configuração via JSON**: cabeçalho, sobre, experiência profissional, formação acadêmica, projetos, habilidades e certificações, tudo editável em `portfolio.config.json`.
-- **Seções opcionais e reordenáveis**: qualquer seção pode ser removida (`null`) ou reordenada apenas mudando a posição no arquivo de configuração.
-- **Blog embutido**: posts em Markdown dentro de `src/content/blog/`, publicados automaticamente sem precisar registrar nada em outro lugar.
-- **Texto rico**: formatação limitada (negrito, itálico, riscado, links coloridos, etc.) nos campos do `portfolio.config.json` e Markdown completo no corpo dos posts do blog.
-- **Estrelas do GitHub**: quando o link de um projeto aponta para um repositório público do GitHub, o número de estrelas é exibido automaticamente no card.
-- **Atividade do Discord**: exibe em tempo real o que você está jogando/ouvindo no Discord, junto com um indicador de status (online/ausente/ocupado/offline), via [Grux API](https://github.com/matheusaudibert/grux).
-- **Temas claro, escuro e automático**, com escala visual ajustável (`small`, `medium`, `high`).
-- **Idiomas**: títulos de seção em português ou inglês (`meta.language`).
-- **Validação de configuração**: `portfolio.config.json` é validado contra o schema oficial (`@openportfolios/schema`) antes de cada build, com mensagens de erro claras.
+```
+src/
+├── app/
+│   ├── layout.tsx        # fontes, metadata, <html lang>
+│   ├── page.tsx          # renderiza o portfólio
+│   ├── globals.css       # tokens de cor/tipo e o interruptor bilíngue
+│   └── world.css         # os componentes visuais da página
+├── components/world/
+│   ├── portfolio.tsx     # amarra o mundo 3D às oito seções
+│   ├── use-world.ts      # ciclo de vida do engine e do pipeline
+│   ├── t.tsx             # texto bilíngue
+│   ├── rail.tsx          # trilho que marca a estação atual
+│   ├── site-header.tsx
+│   └── sections/         # uma seção por arquivo
+└── lib/world/
+    ├── engine.ts         # renderer, câmera em spline, scroll, loop
+    ├── stations.ts       # os oito builders 3D e o mapa do mundo (LAYOUT)
+    ├── pipeline.ts       # CICD_NODES / CICD_RUN — a fonte da verdade
+    └── palette.ts        # cores e helpers de geometria
+```
 
-## Como usar
+### Como a câmera segue o scroll
 
-Este repositório é um template do GitHub. Para criar o seu portfolio:
+`measure()` lê o centro de cada seção (`#st-hero`, `#st-etl`, …) e monta as âncoras.
+`scrollToU()` converte `window.scrollY` no parâmetro `u` da spline de forma que a
+estação *i* seja alcançada exatamente quando a seção *i* está centralizada — isso
+funciona com seções de alturas diferentes, o que uma interpolação linear do scroll
+não faria. O `u` passa por um `damp()` independente de taxa de quadros, então mesmo
+uma rolagem brusca vira um movimento fluido.
 
-1. Clique em **"Use this template"** no topo da página do repositório e crie o seu próprio repositório a partir dele.
-2. Ao dar o primeiro `push` na branch `main` do seu repositório, um workflow automático substitui este README por um README simples do seu portfolio e se auto-remove (isso não acontece no repositório original `openportfolios/yuri`).
-3. Edite `portfolio.config.json` com as suas informações (veja a seção [Configuração](#configuração)).
-4. Publique o projeto (veja [Deploy](#deploy)).
+### Enquadramento por estação
 
-## Configuração
+Cada entrada do `LAYOUT` declara `pos` (onde o conteúdo 3D vive), `cam` (deslocamento
+da câmera), `bias` (fração da meia-largura que empurra o objeto para um lado) e
+`lift` (fração da meia-altura que o sobe, abrindo espaço para o conteúdo embaixo).
+`bias` e `lift` viram unidades de mundo a cada resize, a partir do FOV e do aspecto.
+Em telas estreitas o `bias` zera e a câmera recua 34%: o 3D vira fundo e o texto
+assume a coluna inteira.
 
-Todo o conteúdo do site é controlado pelo arquivo `portfolio.config.json`, na raiz do projeto. Ele é dividido em blocos, um por seção do site (`meta`, `person`, `about`, `workExperience`, `education`, `projects`, `skills`, `certifications`, `blog`, `discordActivity`).
+### Estado do pipeline
 
-A documentação completa de cada campo, incluindo como remover e reordenar seções, formatos de texto rico aceitos e como publicar posts no blog, está em [DOCUMENTATION.md](DOCUMENTATION.md).
+`CICD_RUN` é uma lista `[nó, estado, atraso]` — a fonte única da verdade. Os botões e
+o clique no hero chamam o mesmo `world.run()`, que agenda os passos; cada evento pinta
+o nó nas **duas** instâncias do grafo (hero e entrega, que leem o mesmo `store.nodeState`)
+e escreve uma linha no terminal com timestamp real. Há um retry proposital no `test:int`
+para mostrar falha e recuperação.
 
-## Rodando localmente
+### Acessibilidade e performance
 
-Pré-requisitos: [Node.js](https://nodejs.org) e npm.
+- o engine entra por `import()` dinâmico: three.js (~88 KB gz) fica fora do bundle inicial
+- `prefers-reduced-motion`: a câmera para de flutuar e o tempo do mundo corre a 25%
+- o loop pausa com a aba em segundo plano
+- só as estações a menos de 1,6 índice da câmera rodam `update()`
+- sem WebGL, `:root[data-webgl="off"]` devolve fundos opacos e o pipeline segue no terminal
+
+### Bilíngue
+
+Cada texto passa por `<T pt en />`, que renderiza os dois idiomas; uma regra de CSS em
+`:root[data-lang]` mostra um e esconde o outro. Zero re-render, zero dicionário em JS.
+
+## Desenvolvimento
 
 ```bash
-npm install     # instala as dependências
-npm run dev     # inicia o servidor de desenvolvimento em http://localhost:3000
-npm run build   # gera a versão de produção (valida o portfolio.config.json antes)
-npm run start   # roda a versão de produção já buildada
-```
-
-Alterações em `portfolio.config.json` e em posts do blog (`.md`) são refletidas automaticamente pelo servidor de desenvolvimento, sem precisar reiniciar nada.
-
-## Estrutura do projeto
-
-```
-├── portfolio.config.json    # configuração do site (edite aqui)
-├── scripts/
-│   └── validate-config.mjs  # valida portfolio.config.json antes do build
-├── src/
-│   ├── app/                 # rotas do Next.js (home, blog, preview)
-│   ├── components/          # componentes React (cabeçalho, cards, blog, tema, etc.)
-│   ├── content/blog/        # posts do blog, um arquivo .md por post
-│   └── lib/                 # leitura/validação da config, blog, GitHub, texto rico
-└── public/                  # arquivos estáticos (imagens, ícones)
+npm install
+npm run dev     # http://localhost:3000
+npm run build
+npm start
 ```
 
 ## Deploy
 
-Por ser um projeto Next.js padrão, o portfolio pode ser publicado em qualquer plataforma compatível, como a [Vercel](https://vercel.com), bastando importar o repositório e usar as configurações padrão (`npm run build` / `npm run start`).
+Cloudflare Workers via OpenNext, com domínio próprio configurado em `wrangler.jsonc`:
 
-## Licença
-
-Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
+```bash
+npx wrangler login              # uma vez, interativo
+npx opennextjs-cloudflare build
+npx wrangler deploy
+```
