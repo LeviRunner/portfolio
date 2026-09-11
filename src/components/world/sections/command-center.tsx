@@ -65,10 +65,16 @@ export function CommandCenter({ focus }: Props) {
               <h2 className="section-title">
                 <T pt="Aberto a novas oportunidades" en="Open to new opportunities" />
               </h2>
+              <p className="contact-role">
+                <T
+                  pt="Engenheiro de Dados | Especialista em DataOps"
+                  en="Data Engineer | DataOps Specialist"
+                />
+              </p>
               <p className="contact-lede">
                 <T
-                  pt="Se o seu problema envolve dado que não fecha, painel em que ninguém confia ou banco que cai de madrugada, é exatamente o que eu faço."
-                  en="If your problem is data that never reconciles, a dashboard nobody trusts, or a database that falls over at night: that is exactly what I do."
+                  pt="Aplico práticas de DataOps e governança para corrigir divergências em relatórios, restaurar a credibilidade dos dashboards da empresa e garantir bancos de dados estáveis, automatizados e operando 24/7 sem interrupções."
+                  en="I apply DataOps and governance practices to fix reporting discrepancies, restore trust in the company's dashboards, and keep databases stable, automated and running 24/7 without interruption."
                 />
               </p>
               <div className="availability">
