@@ -47,5 +47,5 @@ DESIGN.md
 /.open-next/
 .wrangler/
 
-# protótipo de design do portfólio 3D (fonte do layout, não faz parte do build)
-/Portfólio 3D WebGL Otimizado/
+# protótipo de design do portfólio 3D (fonte do layout, fora do build)
+/design/
