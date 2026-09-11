@@ -220,6 +220,113 @@
   box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.11);
 }
 
+/* ── mira ─────────────────────────────────────────────────────
+   Um "+" que segue o ponteiro e quatro cantos que se fecham em volta do
+   elemento sob ele. Só transform e opacity, para ficar no compositor. */
+.reticle {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.reticle-cross,
+.reticle-corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.reticle-cross {
+  width: 17px;
+  height: 17px;
+  margin: -8.5px 0 0 -8.5px;
+  transition: width 0.2s, height 0.2s, margin 0.2s;
+}
+
+/* Diferença em vez de cor fixa: a cruz precisa aparecer tanto sobre o fundo
+   escuro quanto sobre o botão verde. */
+.reticle-cross::before,
+.reticle-cross::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  mix-blend-mode: difference;
+}
+
+.reticle-cross::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  margin-left: -0.5px;
+}
+
+.reticle-cross::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  margin-top: -0.5px;
+}
+
+.reticle-corner {
+  width: 9px;
+  height: 9px;
+  border: 0 solid var(--line-3);
+  transition: border-color 0.2s, width 0.2s, height 0.2s;
+}
+
+.reticle-corner.c0 { border-top-width: 1px; border-left-width: 1px; margin: 0 0 0 0; }
+.reticle-corner.c1 { border-top-width: 1px; border-right-width: 1px; margin: 0 0 0 -9px; }
+.reticle-corner.c2 { border-bottom-width: 1px; border-left-width: 1px; margin: -9px 0 0 0; }
+.reticle-corner.c3 { border-bottom-width: 1px; border-right-width: 1px; margin: -9px 0 0 -9px; }
+
+.reticle[data-locked="true"] .reticle-cross {
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+}
+
+.reticle[data-locked="true"] .reticle-corner {
+  border-color: var(--accent);
+  width: 13px;
+  height: 13px;
+}
+
+.reticle[data-locked="true"] .reticle-corner.c1 { margin-left: -13px; }
+.reticle[data-locked="true"] .reticle-corner.c2 { margin-top: -13px; }
+.reticle[data-locked="true"] .reticle-corner.c3 { margin: -13px 0 0 -13px; }
+
+/* O ponteiro do sistema some só quando a mira está de fato rodando. */
+:root[data-reticle="on"],
+:root[data-reticle="on"] a,
+:root[data-reticle="on"] button,
+:root[data-reticle="on"] .hero-hit,
+:root[data-reticle="on"] .stage-card {
+  cursor: none;
+}
+
+:root[data-reticle="on"] input[type="range"] {
+  cursor: none;
+}
+
+@media (pointer: coarse) {
+  .reticle {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reticle-cross,
+  .reticle-corner {
+    transition: none;
+  }
+}
+
 /* ── vocabulário tipográfico ─────────────────────────────────── */
 .mono {
   font-family: var(--mono);

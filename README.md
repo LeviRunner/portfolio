@@ -90,6 +90,15 @@ para mostrar falha e recuperação.
 - só as estações a menos de 1,6 índice da câmera rodam `update()`
 - sem WebGL, `:root[data-webgl="off"]` devolve fundos opacos e o pipeline segue no terminal
 
+### Mira
+
+O ponteiro do sistema dá lugar a uma mira: um `+` que segue o cursor e quatro cantos
+que se fecham em volta do elemento sob ele, com um pouco de magnetismo puxando a cruz
+para o centro do alvo. O retângulo do alvo é guardado em coordenadas de documento, não
+de viewport, para o loop não pedir layout a cada quadro enquanto a página rola. Só sai
+do papel em ponteiro fino (`pointer: fine`), e o cursor nativo só desaparece depois que
+a mira está de fato rodando.
+
 ### Bilíngue
 
 Cada texto passa por `<T pt en />`, que renderiza os dois idiomas; uma regra de CSS em

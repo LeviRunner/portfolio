@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Rail } from "./rail";
+import { Reticle } from "./reticle";
 import { SiteHeader } from "./site-header";
 import { useWorld } from "./use-world";
 import { Hero } from "./sections/hero";
@@ -38,6 +39,7 @@ export function WorldPortfolio() {
   return (
     <>
       <canvas ref={world.canvasRef} className="world-canvas" aria-hidden />
+      <Reticle />
       <Rail station={world.station} />
       <SiteHeader onToggleLang={toggleLang} />
 

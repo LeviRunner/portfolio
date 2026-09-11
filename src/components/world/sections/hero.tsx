@@ -15,6 +15,7 @@ export function Hero({ statusColor, statusText, onFireCommit, onRun }: HeroProps
         className="hero-hit"
         onClick={onFireCommit}
         aria-label="Disparar um commit"
+        data-no-target
       />
       <div className="hero-scrim" />
       <div className="hero-fade" />
