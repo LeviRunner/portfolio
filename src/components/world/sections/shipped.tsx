@@ -6,8 +6,8 @@ const PROJECTS = [
     name: "DevRank",
     href: "https://devrank.com.br/",
     tags: ["Python", "Cloudflare", "Next.js"],
-    pt: "Plataforma educacional gamificada em produção sobre o ecossistema Cloudflare. Infraestrutura completa — domínio, DNS, Workers, e-mail transacional com SPF/DKIM — e backend em Python com métricas analíticas e correção automatizada de código em tempo real.",
-    en: "Gamified learning platform running in production on the Cloudflare ecosystem. Full infrastructure — domain, DNS, Workers, transactional email with SPF/DKIM — plus a Python backend with analytics and real-time automated code grading.",
+    pt: "Plataforma educacional gamificada em produção sobre o ecossistema Cloudflare. Infraestrutura completa (domínio, DNS, Workers, e-mail transacional com SPF/DKIM) e backend em Python com métricas analíticas e correção automatizada de código em tempo real.",
+    en: "Gamified learning platform running in production on the Cloudflare ecosystem. Full infrastructure (domain, DNS, Workers, transactional email with SPF/DKIM) plus a Python backend with analytics and real-time automated code grading.",
   },
   {
     name: "DataLens",

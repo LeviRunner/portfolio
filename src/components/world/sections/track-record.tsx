@@ -12,7 +12,7 @@ interface Role {
 
 const ROLES: Role[] = [
   {
-    when: "MAI 2025 — JUN 2026",
+    when: "MAI 2025 → JUN 2026",
     title: { pt: "Analista de Dados", en: "Data Analyst" },
     at: "Los Trigales",
     href: "https://www.lostrigales.com.py",
@@ -37,7 +37,7 @@ const ROLES: Role[] = [
     ],
   },
   {
-    when: "JAN 2021 — DEZ 2024",
+    when: "JAN 2021 → DEZ 2024",
     title: { pt: "Assistente de Banco de Dados", en: "Database Assistant" },
     at: "BunkerGames",
     href: "https://www.bunkergames.com.br",
@@ -62,14 +62,14 @@ const ROLES: Role[] = [
     ],
   },
   {
-    when: "ABR 2018 — DEZ 2020",
+    when: "ABR 2018 → DEZ 2020",
     title: { pt: "Assistente Financeiro", en: "Finance Assistant" },
     at: "Cap Vida",
     tags: [],
     bullets: [
       {
-        pt: "Auditoria de fluxos de caixa e conciliação bancária — a origem da minha leitura de regra de negócio.",
-        en: "Cash-flow auditing and bank reconciliation — where my reading of business rules comes from.",
+        pt: "Auditoria de fluxos de caixa e conciliação bancária, a origem da minha leitura de regra de negócio.",
+        en: "Cash-flow auditing and bank reconciliation, where my reading of business rules comes from.",
       },
       {
         pt: "Relatórios operacionais para suporte à tomada de decisão gerencial.",
@@ -81,12 +81,12 @@ const ROLES: Role[] = [
 
 const STUDIES = [
   {
-    when: "2023 — 2027",
+    when: "2023 → 2027",
     what: { pt: "Bacharelado em Ciência da Computação", en: "BSc in Computer Science" },
     where: "Estácio",
   },
   {
-    when: "JUL 2026 — NOV 2026",
+    when: "JUL 2026 → NOV 2026",
     what: {
       pt: "Formação em Dados & Inteligência Artificial",
       en: "Professional program in Data & AI",

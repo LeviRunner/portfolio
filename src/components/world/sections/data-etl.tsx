@@ -40,7 +40,7 @@ export function DataEtl({ focus }: Props) {
                   validadas e modeladas. Modelagem dimensional em{" "}
                   <em style={{ color: "var(--ink-2)", fontStyle: "normal" }}>star schema</em>, fluxos
                   de ETL desenhados para integridade, SQL avançado e DAX. Python automatiza coleta e
-                  tratamento — a consolidação manual deixa de existir.
+                  tratamento, e a consolidação manual deixa de existir.
                 </>
               }
               en={
@@ -49,7 +49,7 @@ export function DataEtl({ focus }: Props) {
                   validated and modelled. Dimensional{" "}
                   <em style={{ color: "var(--ink-2)", fontStyle: "normal" }}>star schema</em>{" "}
                   modelling, ETL flows designed around integrity, advanced SQL and DAX. Python
-                  automates collection and cleaning — manual consolidation stops existing.
+                  automates collection and cleaning, so manual consolidation stops existing.
                 </>
               }
             />
@@ -97,7 +97,7 @@ export function DataEtl({ focus }: Props) {
             ))}
           </div>
 
-          <div className="fig">FIG.01 — INGESTÃO → TRANSFORMAÇÃO → CARGA</div>
+          <div className="fig">FIG.01 · INGESTÃO → TRANSFORMAÇÃO → CARGA</div>
         </div>
       </div>
     </section>

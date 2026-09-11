@@ -67,8 +67,8 @@ export function CommandCenter({ focus }: Props) {
               </h2>
               <p className="contact-lede">
                 <T
-                  pt="Se o seu problema envolve dado que não fecha, painel em que ninguém confia ou banco que cai de madrugada — é exatamente o que eu faço."
-                  en="If your problem is data that never reconciles, a dashboard nobody trusts, or a database that falls over at night — that is exactly what I do."
+                  pt="Se o seu problema envolve dado que não fecha, painel em que ninguém confia ou banco que cai de madrugada, é exatamente o que eu faço."
+                  en="If your problem is data that never reconciles, a dashboard nobody trusts, or a database that falls over at night: that is exactly what I do."
                 />
               </p>
               <div className="availability">

@@ -80,6 +80,11 @@ para mostrar falha e recuperação.
 ### Acessibilidade e performance
 
 - o engine entra por `import()` dinâmico: three.js (~88 KB gz) fica fora do bundle inicial
+- **qualidade adaptativa**: o alvo é 16,7 ms por quadro. A densidade de pixels do canvas
+  sobe e desce sozinha entre 1x e 1,5x conforme a média móvel do tempo de quadro, com
+  histerese e carência, então telas grandes não perdem quadros por preenchimento
+- nenhum `getBoundingClientRect` dentro do loop: medir força layout síncrono, então as
+  âncoras são recalculadas só quando a rolagem para ou o conteúdo muda de tamanho
 - `prefers-reduced-motion`: a câmera para de flutuar e o tempo do mundo corre a 25%
 - o loop pausa com a aba em segundo plano
 - só as estações a menos de 1,6 índice da câmera rodam `update()`

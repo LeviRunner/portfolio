@@ -2,12 +2,12 @@
 
 :root {
   /* superfícies */
-  --bg: #0b0d10;
-  --bg-panel: rgba(9, 11, 14, 0.62);
-  --bg-panel-soft: rgba(9, 11, 14, 0.58);
-  --bg-terminal: rgba(6, 8, 10, 0.82);
-  --bg-card: rgba(12, 16, 20, 0.72);
-  --bg-card-hover: rgba(17, 25, 29, 0.86);
+  --bg: #0e1116;
+  --bg-panel: rgba(11, 14, 18, 0.62);
+  --bg-panel-soft: rgba(11, 14, 18, 0.58);
+  --bg-terminal: rgba(8, 10, 13, 0.82);
+  --bg-card: rgba(15, 19, 24, 0.72);
+  --bg-card-hover: rgba(20, 28, 33, 0.86);
 
   /* texto */
   --ink: #e8edf1;

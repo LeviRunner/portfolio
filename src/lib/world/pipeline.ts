@@ -45,7 +45,7 @@ export const CICD_RUN: readonly CicdStep[] = [
 export const STATE_TEXT: Record<RunState, string> = {
   run: "▶ running",
   pass: "✓ passed",
-  fail: "✗ failed — exit 1",
+  fail: "✗ failed (exit 1)",
   retry: "↻ retry 1/2",
 };
 

@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 /** Paleta do mundo 3D. Espelha os tokens de cor da interface. */
 export const C = {
-  bg: 0x0b0d10,
+  bg: 0x0e1116,
   accent: 0x4ade80,
   line: 0x2b353d,
   soft: 0x8a97a1,

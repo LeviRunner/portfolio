@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 const SITE_URL = "https://matheusdata.dev";
 const TITLE = "Matheus Santos | Dados, Cloud & DevOps";
 const DESCRIPTION =
-  "Portfólio de Matheus Santos Moises — Analista de Dados com 5 anos em produção: SQL, Power BI, engenharia de dados em Python, Cloud e DevOps.";
+  "Portfólio de Matheus Santos Moises, Analista de Dados com 5 anos em produção: SQL, Power BI, engenharia de dados em Python, Cloud e DevOps.";
 
 // As imagens de OG e o favicon são geradas por opengraph-image.tsx e icon.tsx.
 export const metadata: Metadata = {

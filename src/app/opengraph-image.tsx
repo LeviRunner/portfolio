@@ -4,7 +4,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Matheus Santos | Dados, Cloud & DevOps";
 
-const BG = "#0B0D10";
+const BG = "#0E1116";
 const ACCENT = "#4ADE80";
 const LINE = "#2B353D";
 

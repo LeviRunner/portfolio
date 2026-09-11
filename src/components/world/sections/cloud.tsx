@@ -41,7 +41,7 @@ export function Cloud({ replicas, onReplicas }: Props) {
                   <a href="https://devrank.com.br/" target="_blank" rel="noopener noreferrer">
                     DevRank
                   </a>{" "}
-                  roda inteiro no ecossistema Cloudflare — domínio, DNS, Workers e e-mail
+                  roda inteiro no ecossistema Cloudflare: domínio, DNS, Workers e e-mail
                   transacional com SPF/DKIM, tudo sob minha responsabilidade.
                 </>
               }
@@ -50,7 +50,7 @@ export function Cloud({ replicas, onReplicas }: Props) {
                   <a href="https://devrank.com.br/" target="_blank" rel="noopener noreferrer">
                     DevRank
                   </a>{" "}
-                  runs entirely on the Cloudflare ecosystem — domain, DNS, Workers and transactional
+                  runs entirely on the Cloudflare ecosystem: domain, DNS, Workers and transactional
                   email with SPF/DKIM, all under my ownership.
                 </>
               }
@@ -79,7 +79,7 @@ export function Cloud({ replicas, onReplicas }: Props) {
             </div>
           </div>
 
-          <div className="fig">FIG.02 — CLUSTER · LB · AUTOSCALING</div>
+          <div className="fig">FIG.02 · CLUSTER · LB · AUTOSCALING</div>
         </div>
       </div>
     </section>

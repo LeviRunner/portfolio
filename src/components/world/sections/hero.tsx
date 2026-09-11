@@ -36,8 +36,8 @@ export function Hero({ statusColor, statusText, onFireCommit, onRun }: HeroProps
 
         <p className="hero-lede">
           <T
-            pt="Cinco anos em produção levando o dado da origem até um painel em que o gestor confia — e sustentando o ambiente que roda por trás dele. São Paulo, Brasil."
-            en="Five years in production taking data from source to a dashboard leadership actually trusts — and keeping alive the infrastructure running behind it. São Paulo, Brazil."
+            pt="Cinco anos em produção levando o dado da origem até um painel em que o gestor confia, e sustentando o ambiente que roda por trás dele. São Paulo, Brasil."
+            en="Five years in production taking data from source to a dashboard leadership actually trusts, and keeping alive the infrastructure running behind it. São Paulo, Brazil."
           />
         </p>
 

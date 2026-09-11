@@ -13,9 +13,22 @@ const SPINE_PARTICLES = 520;
 const STARS = 1100;
 const NARROW_ASPECT = 1.15;
 const NARROW_PULLBACK = 1.34;
-const MAX_PIXEL_RATIO = 1.75;
 /** Estações fora desta distância (em índice) da câmera não gastam CPU. */
 const UPDATE_WINDOW = 1.6;
+
+/* ── qualidade adaptativa ─────────────────────────────────────
+   O alvo é 60 fps. Um canvas em tela cheia a 1,75x de densidade custa caro em
+   preenchimento; em vez de fixar uma resolução que some com quadros em telas
+   grandes, a densidade sobe e desce sozinha para manter o quadro em 16,7 ms. */
+const QUALITY_STEPS = [1, 1.25, 1.5] as const;
+const TARGET_FRAME_MS = 1000 / 60;
+const SLOW_FRAME_MS = TARGET_FRAME_MS * 1.15;
+const FAST_FRAME_MS = TARGET_FRAME_MS * 0.82;
+const DOWNGRADE_COOLDOWN_S = 2;
+const UPGRADE_COOLDOWN_S = 6;
+
+/** Quanto a câmera persegue o scroll. Baixo demais e a rolagem parece travada. */
+const CAMERA_LAMBDA = 9;
 
 export type PipelineEvent = (id: string, state: RunState) => void;
 
@@ -38,15 +51,20 @@ interface MountedStation {
 }
 
 export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
+  const devicePixels = window.devicePixelRatio || 1;
   let renderer: THREE.WebGLRenderer;
   try {
     renderer = new THREE.WebGLRenderer({
-      canvas, antialias: true, alpha: true, powerPreference: "high-performance",
+      canvas,
+      // Em telas densas a própria densidade já suaviza as linhas; o MSAA ali só
+      // custaria preenchimento.
+      antialias: devicePixels < 1.5,
+      alpha: true,
+      powerPreference: "high-performance",
     });
   } catch {
     return null;
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO));
   renderer.setClearColor(0x000000, 0);
   // As cores foram escolhidas em espaço linear; manter isso preserva o contraste
   // fino das linhas, que a conversão para sRGB lavaria.
@@ -167,10 +185,17 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
     return 1;
   }
 
-  /* ── resize ───────────────────────────────────────────────── */
+  /* ── resize e qualidade ───────────────────────────────────── */
+  let qualityIndex = QUALITY_STEPS.length - 1;
+
+  function applyPixelRatio() {
+    renderer.setPixelRatio(Math.min(devicePixels, QUALITY_STEPS[qualityIndex]));
+    renderer.setSize(Math.max(1, window.innerWidth), Math.max(1, window.innerHeight), false);
+  }
+
   function resize() {
     const w = Math.max(1, window.innerWidth), h = Math.max(1, window.innerHeight);
-    renderer.setSize(w, h, false);
+    applyPixelRatio();
     aspect = w / h;
     camera.aspect = aspect;
     camera.updateProjectionMatrix();
@@ -178,10 +203,22 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
     measure();
   }
 
+  // Medir força um layout síncrono, então nunca acontece dentro do quadro: só
+  // depois que a rolagem para ou que o conteúdo muda de tamanho.
+  const debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  const debounce = (key: string, fn: () => void, ms: number) => () => {
+    const pending = debounceTimers.get(key);
+    if (pending) clearTimeout(pending);
+    debounceTimers.set(key, setTimeout(fn, ms));
+  };
+  const remeasure = debounce("measure", measure, 150);
+  const requestResize = debounce("resize", resize, 120);
+
   // O box do <html> não acompanha o crescimento do conteúdo — o do <body> acompanha.
-  const ro = new ResizeObserver(resize);
+  const ro = new ResizeObserver(requestResize);
   ro.observe(document.body);
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", requestResize);
+  window.addEventListener("scroll", remeasure, { passive: true });
   resize();
 
   /* ── ponteiro (o canvas não recebe eventos, então ouvimos a janela) ── */
@@ -201,7 +238,7 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
   const camPos = new THREE.Vector3();
   const lookPos = new THREE.Vector3();
   let raf = 0, live = false, u = 0, worldTime = 0, currentStation = 0;
-  let frameCount = 0, lastHeight = 0;
+  let frameAvgMs = TARGET_FRAME_MS, qualityCooldown = UPGRADE_COOLDOWN_S;
   let onStationChange: ((index: number, id: string) => void) | null = null;
 
   function frame() {
@@ -210,13 +247,22 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
     worldTime += reduced ? dt * 0.25 : dt;
     const t = worldTime;
 
-    // rede de segurança: fontes e conteúdo tardio mudam a altura da página
-    if (++frameCount % 30 === 0) {
-      const height = document.documentElement.scrollHeight;
-      if (height !== lastHeight) { lastHeight = height; measure(); }
+    // Mantém o quadro em 60 fps mexendo só na densidade de pixels.
+    frameAvgMs += (dt * 1000 - frameAvgMs) * 0.06;
+    qualityCooldown -= dt;
+    if (qualityCooldown <= 0) {
+      if (frameAvgMs > SLOW_FRAME_MS && qualityIndex > 0) {
+        qualityIndex -= 1;
+        applyPixelRatio();
+        qualityCooldown = DOWNGRADE_COOLDOWN_S;
+      } else if (frameAvgMs < FAST_FRAME_MS && qualityIndex < QUALITY_STEPS.length - 1) {
+        qualityIndex += 1;
+        applyPixelRatio();
+        qualityCooldown = UPGRADE_COOLDOWN_S;
+      }
     }
 
-    u = reduced ? scrollToU() : damp(u, scrollToU(), 5.5, dt);
+    u = reduced ? scrollToU() : damp(u, scrollToU(), CAMERA_LAMBDA, dt);
 
     camPos.copy(camCurve.getPoint(u));
     lookPos.copy(lookCurve.getPoint(u));
@@ -281,7 +327,9 @@ export function mountWorld(canvas: HTMLCanvasElement): WorldApi | null {
       api.stop();
       clearTimers();
       ro.disconnect();
-      window.removeEventListener("resize", resize);
+      debounceTimers.forEach(clearTimeout);
+      window.removeEventListener("resize", requestResize);
+      window.removeEventListener("scroll", remeasure);
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("visibilitychange", onVisibility);
       scene.traverse((o) => {
